@@ -12,14 +12,13 @@ export default function AddMealPage() {
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState<any[]>([]);
 
-  // ক্যাটাগরি ফেচিং
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const res = await fetch("http://localhost:5000/api/categories");
         const data = await res.json();
         
-        // আপনার কন্ট্রোলার সরাসরি 'result' পাঠায়, তাই data চেক করুন
+  
         const categoryArray = Array.isArray(data) ? data : (data?.data || []);
         setCategories(categoryArray);
       } catch (err) {
@@ -37,7 +36,7 @@ export default function AddMealPage() {
     const formData = new FormData(e.currentTarget);
     const mealData = {
       name: formData.get("name"),
-      price: formData.get("price"), // সার্ভিসে parseFloat হবে
+      price: formData.get("price"),
       description: formData.get("description"),
       categoryId: formData.get("categoryId"), 
     };

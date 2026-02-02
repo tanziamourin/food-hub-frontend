@@ -1,11 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-// import {
-//   getProviderOrders,
-//   updateProviderOrderStatus,
-// } from "@/services/order.service";
-// import { ProviderOrder, OrderStatus } from "@/types/order";
 import { getProviderOrders , updateProviderOrderStatus, } from "@/app/services/order.service";
 import { ProviderOrder , OrderStatus} from "@/app/types/order";
 

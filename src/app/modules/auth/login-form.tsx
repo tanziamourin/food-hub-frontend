@@ -29,7 +29,7 @@ export function LoginForm() {
         return;
       }
 
-      // fetch profile (optional but fine)
+      // fetch profile 
       const res = await fetch("http://localhost:5000/api/auth/me", {
         credentials: "include",
       });

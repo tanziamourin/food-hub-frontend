@@ -1,4 +1,4 @@
-// import { RegisterForm } from "@/components/modules/authentication/register-form";
+
 
 import { RegisterForm } from "@/app/modules/auth/register-form";
 

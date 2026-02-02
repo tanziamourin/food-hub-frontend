@@ -15,7 +15,7 @@ const fetchUsers = async () => {
       headers: {
         "Content-Type": "application/json",
       },
-      // Better-Auth বা কুকি বেসড অথেনটিকেশনের জন্য এটি বাধ্যতামূলক
+      
       credentials: "include", 
     });
 
@@ -132,5 +132,5 @@ const toggleUserStatus = async (userId: string, currentStatus: string) => {
   );
 };
 
-// এই লাইনটি সবচেয়ে গুরুত্বপূর্ণ, এটিই এররটি ফিক্স করবে
+
 export default ManageUsersPage;

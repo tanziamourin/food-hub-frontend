@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 export default function MealCard({ meal }: { meal: any }) {
   return (
     <div className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition">
-      {/* যদি ইমেজ থাকে তবে এখানে যোগ করতে পারেন */}
+  
       <div className="p-4 space-y-2">
         <h3 className="font-bold text-lg">{meal.name}</h3>
         <p className="text-sm text-gray-600 line-clamp-2">{meal.description}</p>

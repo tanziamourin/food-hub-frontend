@@ -1,5 +1,4 @@
-// src/app/(commonLayout)/meals/page.tsx
-import MealCard from "@/app/modules/meals/MealCard";
+// src/app/(commonLayout)/meals/page.tsximport MealCard from "@/app/modules/meals/MealCard";
 import { getMeals } from "@/app/services/meal.service";
 
 export default async function MealsPage() {
@@ -8,8 +7,7 @@ export default async function MealsPage() {
   return (
     <div className="max-w-7xl mx-auto p-6">
       <h1 className="text-2xl font-bold mb-6">Explore Delicious Meals 🍱</h1>
-      
-      {/* যদি ডাটা না থাকে তার জন্য একটি চেক */}
+ 
       {meals && meals.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {meals.map((meal: any) => (
