@@ -27,9 +27,9 @@ export default function DashboardLayout({
   }, [loading, user, router]);
 
 
-  useEffect(() => {
-    setIsMobileMenuOpen(false);
-  }, [pathname]);
+  // useEffect(() => {
+  //   setIsMobileMenuOpen(false);
+  // }, [pathname]);
 
   if (loading || !user) {
     return (
