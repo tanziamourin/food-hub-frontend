@@ -1,15 +1,24 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import MealCard from "@/app/modules/meals/MealCard";
 import { getMeals } from "@/services/meal.service";
 
-export default async function ProviderMenuPage() {
-  const meals = await getMeals();
+export default function ProviderMenuPage() {
+  const [meals, setMeals] = useState<any[]>([]);
+
+  useEffect(() => {
+    getMeals()
+      .then((res) => setMeals(res))
+      .catch((err) => console.error(err));
+  }, []);
 
   return (
     <div className="p-6">
       <h1 className="text-xl font-bold mb-4">My Meals</h1>
 
       <div className="grid grid-cols-3 gap-4">
-        {meals.map((meal: any) => (
+        {meals.map((meal) => (
           <MealCard key={meal.id} meal={meal} />
         ))}
       </div>

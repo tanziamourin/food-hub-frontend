@@ -18,7 +18,7 @@ const ProviderProfilePage = () => {
   // FETCH
   const fetchProfile = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/provider/profile", {
+      const res = await fetch("https://food-hub-backend-one.vercel.app/api/provider/profile", {
         credentials: "include",
       });
 
@@ -76,7 +76,7 @@ const ProviderProfilePage = () => {
       }
 
       const res = await fetch(
-        "http://localhost:5000/api/provider/profile",
+        "https://food-hub-backend-one.vercel.app/api/provider/profile",
         {
           method: "PATCH",
           credentials: "include",

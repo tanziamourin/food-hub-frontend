@@ -12,7 +12,7 @@ const ManageUsersPage = () => {
   // Fetch users
   const fetchUsers = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/admin/users", {
+      const res = await fetch("https://food-hub-backend-one.vercel.app/api/admin/users", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -50,7 +50,7 @@ const ManageUsersPage = () => {
       setUpdatingUserId(userId);
 
       const res = await fetch(
-        `http://localhost:5000/api/admin/users/${userId}/status`,
+        `https://food-hub-backend-one.vercel.app/api/admin/users/${userId}/status`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -80,7 +80,7 @@ const ManageUsersPage = () => {
       setUpdatingUserId(userId);
 
       const res = await fetch(
-        `http://localhost:5000/api/admin/users/${userId}/role`,
+        `https://food-hub-backend-one.vercel.app/api/admin/users/${userId}/role`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },

@@ -14,7 +14,7 @@ export default function AdminCategoryPage() {
  
   const fetchCategories = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/categories", {
+      const res = await fetch("https://food-hub-backend-one.vercel.app/api/categories", {
         credentials: "include", 
       });
       const data = await res.json();
@@ -35,7 +35,7 @@ export default function AdminCategoryPage() {
 
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/categories", {
+      const res = await fetch("https://food-hub-backend-one.vercel.app/api/categories", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name: newCategory }),
@@ -63,7 +63,7 @@ export default function AdminCategoryPage() {
     if (!confirm("Are you sure?")) return;
 
     try {
-      const res = await fetch(`http://localhost:5000/api/categories/${id}`, {
+      const res = await fetch(`https://food-hub-backend-one.vercel.app/api/categories/${id}`, {
         method: "DELETE",
         credentials: "include",
       });

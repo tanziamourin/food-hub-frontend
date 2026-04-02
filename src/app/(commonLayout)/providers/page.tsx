@@ -11,7 +11,7 @@ const ProvidersPage = () => {
 
   const fetchProviders = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/providers");
+      const res = await fetch("https://food-hub-backend-one.vercel.app/api/providers");
 
       const result = await res.json();
 

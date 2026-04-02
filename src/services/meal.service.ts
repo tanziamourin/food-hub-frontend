@@ -1,10 +1,10 @@
 import axios from "axios";
 import { Meal } from "../types/meal";
 // import { Meal } from "@/types/meal";
-const BASE_URL = "http://localhost:5000/api";
+const BASE_URL = "https://food-hub-backend-one.vercel.app/api";
 
 export const getMeals = async (): Promise<Meal[]> => {
-  const res = await axios.get("http://localhost:5000/api/meals", {
+  const res = await axios.get("https://food-hub-backend-one.vercel.app/api/meals", {
     withCredentials: true,
   });
  return res.data;
@@ -12,7 +12,7 @@ export const getMeals = async (): Promise<Meal[]> => {
 export const addMeal = async (mealData: any) => {
   try {
   
-    const res = await axios.post("http://localhost:5000/api/provider/meals", mealData, {
+    const res = await axios.post("https://food-hub-backend-one.vercel.app/api/provider/meals", mealData, {
       withCredentials: true, 
     });
     return res.data;

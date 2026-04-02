@@ -12,7 +12,7 @@ const ProviderDetailsPage = () => {
   const fetchProvider = async () => {
     try {
       const res = await fetch(
-        `http://localhost:5000/api/providers/${id}`
+        `https://food-hub-backend-one.vercel.app/api/providers/${id}`
       );
 
       if (!res.ok) throw new Error("Failed");

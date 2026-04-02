@@ -30,7 +30,7 @@ export function LoginForm() {
       }
 
       // fetch profile 
-      const res = await fetch("http://localhost:5000/api/auth/me", {
+      const res = await fetch("https://food-hub-backend-one.vercel.app/api/auth/me", {
         credentials: "include",
       });
 

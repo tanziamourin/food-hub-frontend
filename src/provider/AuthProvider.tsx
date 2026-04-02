@@ -26,7 +26,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 const refresh = async () => {
   try {
-    const res = await fetch("http://localhost:5000/api/auth/me", {
+    const res = await fetch("https://food-hub-backend-one.vercel.app/api/auth/me", {
       credentials: "include", 
     });
     if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
@@ -54,7 +54,7 @@ const refresh = async () => {
   }, []);
 
  const logout = async () => {
-  await fetch("http://localhost:5000/api/auth/sign-out", {
+  await fetch("https://food-hub-backend-one.vercel.app/api/auth/sign-out", {
     method: "POST",
     credentials: "include",
   });
