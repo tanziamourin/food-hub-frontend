@@ -1,4 +1,4 @@
-// components/home/FeaturedMeals.tsx
+
 export default function FeaturedMeals() {
   return (
     <section className="bg-gray-50 py-16">

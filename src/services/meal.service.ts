@@ -31,7 +31,7 @@ export const mealService = {
 
     console.log("🔥 RAW:", res.data);
 
-    // ✅ Backend direct array return kore
+
     return {
       data: res.data || [],
     };
