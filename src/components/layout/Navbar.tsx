@@ -11,7 +11,7 @@ import Link from "next/link";
 
 export default function Navbar() {
   const { user, loading, logout } = useAuth();
-  const { cartItems } = useCart() || { cartItems: [] }; // ✅ SAFE
+  const { cart } = useCart(); 
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
@@ -66,9 +66,9 @@ export default function Navbar() {
                     <ShoppingCart className="size-6 text-muted-foreground group-hover:text-primary transition-colors" />
 
                     {/* ✅ SAFE LENGTH */}
-                    {(cartItems?.length || 0) > 0 && (
+                    {(cart?.length || 0) > 0 && (
                       <span className="absolute -top-2 -right-3 bg-red-500 text-white text-xs px-1.5 rounded-full">
-                        {cartItems?.length || 0}
+                        {cart?.length || 0}
                       </span>
                     )}
                   </Link>
@@ -131,9 +131,9 @@ export default function Navbar() {
                 <>
                   <Link href="/cart" onClick={() => setOpen(false)}>
                     Cart
-                    {(cartItems?.length || 0) > 0 && (
+                    {(cart?.length || 0) > 0 && (
                       <span className="ml-2 bg-red-500 text-white text-xs px-2 rounded-full">
-                        {cartItems?.length || 0}
+                        {cart?.length || 0}
                       </span>
                     )}
                   </Link>

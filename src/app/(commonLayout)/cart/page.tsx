@@ -47,14 +47,14 @@ export default function CartPage() {
 
               <Image
                 src={item.image || "/placeholder.png"}
-                alt={item.title}
+                alt={item.name}
                 width={100}
                 height={100}
                 className="rounded-lg object-cover"
               />
 
               <div className="flex-1 space-y-2">
-                <h3 className="font-bold">{item.title}</h3>
+                <h3 className="font-bold">{item.name}</h3>
                 <p className="text-sm text-gray-500">
                   {item.description || "Delicious meal"}
                 </p>
@@ -76,7 +76,7 @@ export default function CartPage() {
                 </p>
               </div>
 
-              <button onClick={() => handleRemove(item.id, item.title)}>
+              <button onClick={() => handleRemove(item.id, item.name)}>
                 <Trash2 className="text-red-500" />
               </button>
             </div>
