@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getProviderOrders , updateProviderOrderStatus, } from "@/app/services/order.service";
-import { ProviderOrder , OrderStatus} from "@/app/types/order";
+import { getProviderOrders , updateProviderOrderStatus, } from "@/services/order.service";
+import { ProviderOrder , OrderStatus} from "@/types/order";
 
 export default function ProviderOrdersPage() {
   const [orders, setOrders] = useState<ProviderOrder[]>([]);
@@ -22,7 +22,7 @@ export default function ProviderOrdersPage() {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Incoming Orders</h1>
+      <h1 className="text-2xl font-bold mb-4">Incoming Orders...</h1>
 
       {orders.map(order => (
         <div key={order.id} className="border p-4 mb-4 rounded">

@@ -1,14 +1,17 @@
 "use client";
 
-import Link from "next/link";
+
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, ShoppingCart, X } from "lucide-react";
 import { ModeToggle } from "./ModeToggle";
 import { useAuth } from "@/provider/AuthProvider";
 import { usePathname } from "next/navigation";
+import { useCart } from "@/provider/CartProvider";
+import Link from "next/link";
 
 export default function Navbar() {
   const { user, loading, logout } = useAuth();
+  const { cartItems } = useCart() || { cartItems: [] }; // ✅ SAFE
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
@@ -16,9 +19,12 @@ export default function Navbar() {
   if (pathname.startsWith("/dashboard")) return null;
   if (loading) return null;
 
+  const isCustomer = user?.role === "CUSTOMER";
+
   return (
     <nav className="border-b bg-background sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+        
         {/* Logo */}
         <Link href="/" className="text-xl font-bold">
           FoodHub 🍱
@@ -26,13 +32,18 @@ export default function Navbar() {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-6">
-          <Link href="/meals" className="hover:text-primary transition">
+
+          <Link href="/meals" className="hover:text-primary">
             Meals
           </Link>
 
+          <Link href="/providers">
+            Providers
+          </Link>
+
+          {/* NOT logged in */}
           {!user && (
             <>
-              <Link href="/providers">Providers</Link>
               <Link href="/login">Login</Link>
               <Link
                 href="/register"
@@ -43,12 +54,32 @@ export default function Navbar() {
             </>
           )}
 
+          {/* Logged in */}
           {user && (
             <>
               <Link href="/dashboard">Dashboard</Link>
+
+              {/* ✅ Customer only */}
+              {isCustomer && (
+                <>
+                  <Link href="/cart" className="relative">
+                    <ShoppingCart className="size-6 text-muted-foreground group-hover:text-primary transition-colors" />
+
+                    {/* ✅ SAFE LENGTH */}
+                    {(cartItems?.length || 0) > 0 && (
+                      <span className="absolute -top-2 -right-3 bg-red-500 text-white text-xs px-1.5 rounded-full">
+                        {cartItems?.length || 0}
+                      </span>
+                    )}
+                  </Link>
+
+                  <Link href="/checkout">Checkout</Link>
+                </>
+              )}
+
               <button
                 onClick={logout}
-                className="hover:text-red-500 transition"
+                className="hover:text-red-500"
               >
                 Logout
               </button>
@@ -62,7 +93,6 @@ export default function Navbar() {
         <button
           className="md:hidden"
           onClick={() => setOpen(!open)}
-          aria-label="Toggle Menu"
         >
           {open ? <X /> : <Menu />}
         </button>
@@ -70,36 +100,21 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {open && (
-        <div className="md:hidden border-t bg-background px-4 pb-4 space-y-3">
-          <Link
-            href="/meals"
-            onClick={() => setOpen(false)}
-            className="block"
-          >
+        <div className="md:hidden border-t px-4 pb-4 space-y-3">
+
+          <Link href="/meals" onClick={() => setOpen(false)}>
             Meals
           </Link>
 
           {!user && (
             <>
-              <Link
-                href="/providers"
-                onClick={() => setOpen(false)}
-                className="block"
-              >
+              <Link href="/providers" onClick={() => setOpen(false)}>
                 Providers
               </Link>
-              <Link
-                href="/login"
-                onClick={() => setOpen(false)}
-                className="block"
-              >
+              <Link href="/login" onClick={() => setOpen(false)}>
                 Login
               </Link>
-              <Link
-                href="/register"
-                onClick={() => setOpen(false)}
-                className="block font-medium text-primary"
-              >
+              <Link href="/register" onClick={() => setOpen(false)}>
                 Register
               </Link>
             </>
@@ -107,28 +122,41 @@ export default function Navbar() {
 
           {user && (
             <>
-              <Link
-                href="/dashboard"
-                onClick={() => setOpen(false)}
-                className="block"
-              >
+              <Link href="/dashboard" onClick={() => setOpen(false)}>
                 Dashboard
               </Link>
+
+              {/* ✅ Customer only */}
+              {isCustomer && (
+                <>
+                  <Link href="/cart" onClick={() => setOpen(false)}>
+                    Cart
+                    {(cartItems?.length || 0) > 0 && (
+                      <span className="ml-2 bg-red-500 text-white text-xs px-2 rounded-full">
+                        {cartItems?.length || 0}
+                      </span>
+                    )}
+                  </Link>
+
+                  <Link href="/checkout" onClick={() => setOpen(false)}>
+                    Checkout
+                  </Link>
+                </>
+              )}
+
               <button
                 onClick={() => {
                   logout();
                   setOpen(false);
                 }}
-                className="block text-left text-red-500"
+                className="text-red-500"
               >
                 Logout
               </button>
             </>
           )}
 
-          <div className="pt-2">
-            <ModeToggle />
-          </div>
+          <ModeToggle />
         </div>
       )}
     </nav>

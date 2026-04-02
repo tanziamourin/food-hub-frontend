@@ -1,10 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-// import { Order } from "@/types/order";
-// import { getMyOrders } from "@/services/order.service";
-import { Order } from "@/app/types/order";
-import { getMyOrders } from "@/app/services/order.service";
+
+import { Order } from "@/types/order";
+import { getMyOrders } from "@/services/order.service";
 
 export default function MyOrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);

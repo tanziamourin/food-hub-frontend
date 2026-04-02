@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { userService } from "@/services/user.service";
+// import { userService } from "@/services/user.service";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2, User, Mail, Phone, Shield, Save } from "lucide-react";
 import { toast } from "sonner";
+import { userService } from "@/services/user.service";
 
 export default function ProfilePage() {
     const router = useRouter();
@@ -79,62 +80,7 @@ export default function ProfilePage() {
     return (
         <div className="max-w-6xl mx-auto space-y-12 pb-24">
             {/* Header Section: Neural Identity Sync */}
-            <div className="relative p-6 md:p-10 rounded-[2rem] md:rounded-[3rem] bg-zinc-950/40 border border-white/5 backdrop-blur-3xl overflow-hidden group">
-                {/* Background Tech Mesh */}
-                <div className="absolute inset-0 opacity-[0.03] pointer-events-none group-hover:opacity-[0.05] transition-opacity duration-1000">
-                    <div className="absolute inset-0 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:24px_24px]" />
-                </div>
-
-                <div className="relative flex flex-col lg:flex-row lg:items-center justify-between gap-10">
-                    <div className="space-y-6">
-                        <div className="flex flex-wrap items-center gap-3">
-                            <div className="px-4 py-1.5 bg-primary/10 border border-primary/20 rounded-full text-primary text-[10px] font-black uppercase tracking-[0.3em] flex items-center gap-2">
-                                <Activity className="size-3 animate-pulse" />
-                                Neural Link: Active
-                            </div>
-                            <div className="px-4 py-1.5 bg-white/[0.03] border border-white/10 rounded-full text-gray-500 text-[10px] font-black uppercase tracking-[0.3em]">
-                                Clearance: {profile.role}
-                            </div>
-                        </div>
-
-                        <div className="space-y-3">
-                            <h1 className="text-4xl md:text-5xl lg:text-7xl font-black text-white tracking-tighter uppercase leading-[0.85]">
-                                Identity <span className="text-primary italic">Nexus</span>
-                            </h1>
-                            <p className="text-xs md:text-sm md:text-base text-gray-400 font-medium max-w-xl leading-relaxed">
-                                Managed synchronization of your core parameters within the Healio Decentralized Protocol. Ensure all identification markers are verified.
-                            </p>
-                        </div>
-                    </div>
-
-                    {/* Identity Card Visualization */}
-                    <div className="relative w-full lg:w-80 group/card">
-                        <div className="absolute -inset-4 bg-primary/10 blur-2xl rounded-full opacity-0 group-hover/card:opacity-100 transition-opacity duration-700" />
-                        <div className="relative aspect-[1.6/1] rounded-3xl bg-zinc-900 border border-white/10 p-6 flex flex-col justify-between overflow-hidden shadow-2xl transition-transform duration-500 group-hover/card:translate-y-[-5px]">
-                            <div className="absolute top-0 right-0 p-4 opacity-10">
-                                <Shield className="size-20" />
-                            </div>
-                            <div className="flex justify-between items-start">
-                                <div className="size-10 rounded-xl bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center text-white">
-                                    <Zap className="size-5 fill-white" />
-                                </div>
-                                <div className="text-right">
-                                    <p className="text-[8px] font-black text-primary uppercase tracking-[0.3em]">Signature ID</p>
-                                    <p className="text-[10px] font-mono text-white">#HL-{session.user.id.slice(-8).toUpperCase()}</p>
-                                </div>
-                            </div>
-                            <div>
-                                <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">Authenticated Node</p>
-                                <p className="text-lg font-black text-white uppercase tracking-tighter truncate">{profile.name}</p>
-                                <div className="flex items-center gap-2 mt-2">
-                                    <div className="size-1 bg-green-500 rounded-full animate-pulse" />
-                                    <p className="text-[8px] font-bold text-gray-500 uppercase tracking-[0.2em]">Validated Protocol</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            
 
             <div className="grid lg:grid-cols-12 gap-10">
                 {/* Main Configuration Core */}
@@ -243,49 +189,7 @@ export default function ProfilePage() {
                     </div>
                 </div>
 
-                {/* Sidebar Protocol Metadata */}
-                <div className="lg:col-span-4 space-y-10">
-                    <div className="p-6 md:p-10 rounded-[2rem] md:rounded-[3rem] bg-gradient-to-br from-primary/20 to-blue-600/10 border border-primary/20 shadow-2xl space-y-6 relative overflow-hidden group transition-transform duration-500 hover:translate-y-[-5px]">
-                        <div className="absolute top-0 right-0 p-6 opacity-10 rotate-12 transition-transform group-hover:rotate-0 duration-700">
-                            <Shield className="size-24 text-white" />
-                        </div>
-                        <div className="size-14 bg-white/10 rounded-2xl flex items-center justify-center text-primary border border-white/10 relative">
-                            <Lock className="size-6" />
-                        </div>
-                        <div className="space-y-3 relative">
-                            <h4 className="text-2xl font-black text-white uppercase tracking-tight leading-none italic">Security <br />Advisory</h4>
-                            <p className="text-xs text-gray-300 font-medium leading-relaxed uppercase tracking-wider opacity-80">
-                                Neural addresses are hard-locked to your biological signature. Contact the Command Center if synchronization is required for deep-level markers.
-                            </p>
-                        </div>
-                        <div className="h-px bg-white/10 w-full" />
-                        <div className="flex items-center gap-4">
-                            <div className="size-2 bg-primary rounded-full animate-ping" />
-                            <span className="text-[10px] font-black text-white uppercase tracking-[0.2em]">Enforcement Level: ALPHA</span>
-                        </div>
-                    </div>
-
-                    <div className="p-6 md:p-10 rounded-[2rem] md:rounded-[3rem] border border-white/5 bg-zinc-950/40 space-y-8">
-                        <div>
-                            <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-4">Metadata Manifest</p>
-                            <div className="space-y-6">
-                                <MetadataItem label="Active Period" value="34 Days" icon={Clock} />
-                                <MetadataItem label="Nodes Connected" value="128 Verified" icon={Activity} />
-                                <MetadataItem label="Protocol Health" value="100% Stability" icon={Shield} />
-                            </div>
-                        </div>
-
-                        <div className="pt-8 border-t border-white/5 space-y-4">
-                            <div className="flex items-center gap-3">
-                                <div className="size-1.5 bg-green-500 rounded-full" />
-                                <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Last Sync: Today, 10:45 PM</span>
-                            </div>
-                            <p className="text-[9px] text-gray-600 font-black uppercase tracking-[0.3em] leading-relaxed">
-                                System Status: Operational // Encryption: Active // Healio Protocol V4.2
-                            </p>
-                        </div>
-                    </div>
-                </div>
+               
             </div>
         </div>
     );

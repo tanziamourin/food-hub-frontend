@@ -62,8 +62,11 @@ export default function DashboardLayout({
         {user.role === "PROVIDER" && (
           <>
             <SidebarLink href="/dashboard" icon={<LayoutGrid size={20}/>} label="Dashboard" active={pathname === '/dashboard'} />
-            <SidebarLink href="/dashboard/add-meals" icon={<UtensilsCrossed size={20}/>} label="Add Meals" active={pathname === '/dashboard/add-meals'} />
+              <SidebarLink href="/dashboard/profile" icon={<UserCircle size={20}/>} label="Profile" active={pathname === '/dashboard/profile'} />
+            <SidebarLink href="/dashboard/add-meal" icon={<UtensilsCrossed size={20}/>} label="Add Meals" active={pathname === '/dashboard/add-meals'} />
             <SidebarLink href="/dashboard/my-meals" icon={<ClipboardList size={20}/>} label="My Meals" active={pathname === '/dashboard/my-meals'} />
+            <SidebarLink href="/dashboard/menu" icon={<ClipboardList size={20}/>} label="Menu" active={pathname === '/dashboard/menu'} />
+            <SidebarLink href="/dashboard/orders" icon={<ClipboardList size={20}/>} label="Orders" active={pathname === '/dashboard/my-orders'} />
           </>
         )}
         {user.role === "CUSTOMER" && (
@@ -86,7 +89,7 @@ export default function DashboardLayout({
       
       {/* Desktop Sidebar  */}
       <aside className="w-64 border-r hidden md:flex flex-col sticky top-0 h-screen">
-        <Link href="/" className="p-6"> Go to Home</Link>
+        <Link href="/" className="p-6 text-black"> Go to Home</Link>
         {SidebarContent}
       </aside>
 

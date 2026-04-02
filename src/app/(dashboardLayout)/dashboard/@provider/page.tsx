@@ -1,4 +1,4 @@
-// src/app/(dashboardLayout)/@provider/providerDashboard/page.tsx
+
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -10,7 +10,7 @@ export default function ProviderDashboardPage() {
         <h1 className="text-3xl font-bold text-gray-800">Provider Dashboard 👨‍🍳</h1>
         <Link href="/providerDashboard/add-meal">
           <Button className="bg-orange-600 hover:bg-orange-700">
-            + Add New Meal
+            {/* <AddMealPage/> */}
           </Button>
         </Link>
       </div>
