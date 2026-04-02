@@ -32,7 +32,7 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
   const handleGoogleLogin = async () => {
     const data = authClient.signIn.social({
       provider: "google",
-      callbackURL: "https://food-hub-backend-one.vercel.app",
+      callbackURL: "https://food-hub-frontend-ten.vercel.app",
     });
 
     console.log(data);
