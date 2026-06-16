@@ -1,61 +1,70 @@
-import axios from "axios";
-import { CreateOrderPayload,
+import { apiFetch } from "@/lib/api-client";
+import {
+  CreateOrderPayload,
   Order,
   ProviderOrder,
   OrderStatus,
+} from "../types/order";
 
- } from "../types/order";
+//  Create Order
+export const createOrder = async (payload: CreateOrderPayload) => {
+  const { data, error } = await apiFetch<{
+    order: Order;
+    clientSecret: string;
+  }>("/api/orders", {
+    method: "POST",
+    body: payload,
+  });
 
-// export const createOrder = async (payload: CreateOrderPayload) => {
-//   const res = await axios.post("https://food-hub-backend-one.vercel.app/api/orders", payload, {
-//     withCredentials: true,
-//   });
-//   return res.data.data as Order;
-// };
-export const createOrder = async (payload: any) => {
-  try {
-    const res = await axios.post(
-      "https://food-hub-backend-one.vercel.app/api/orders",
-      payload,
-      { withCredentials: true }
-    );
-
-    return {
-      order: res.data.data.order,
-      clientSecret: res.data.data.clientSecret,
-      error: null,
-    };
-  } catch (err: any) {
+  if (error) {
     return {
       order: null,
       clientSecret: null,
-      error: err.response?.data?.message,
+      error,
     };
   }
+
+  return {
+    order: data?.order || null,
+    clientSecret: data?.clientSecret || null,
+    error: null,
+  };
 };
+
+//  Get my orders
 export const getMyOrders = async () => {
-  const res = await axios.get("https://food-hub-backend-one.vercel.app/api/orders/me", {
-    withCredentials: true,
-  });
-  return res.data.data as Order[];
+  const { data, error } = await apiFetch<Order[]>("/api/orders/me");
+
+  if (error) throw new Error(error);
+
+  return data || [];
 };
 
-// Provider
+//  Provider orders
 export const getProviderOrders = async () => {
-  const res = await axios.get("https://food-hub-backend-one.vercel.app/api/provider/orders", {
-    withCredentials: true,
-  });
-  return res.data as ProviderOrder[];
+  const { data, error } = await apiFetch<ProviderOrder[]>(
+    "/api/provider/orders"
+  );
+
+  if (error) throw new Error(error);
+
+  return data || [];
 };
 
+//  Update order status
 export const updateProviderOrderStatus = async (
   orderId: string,
   status: OrderStatus
 ) => {
-  const res = await axios.patch(
-    `https://food-hub-backend-one.vercel.app/api/provider/orders/${orderId}`,
-    { status },
-    { withCredentials: true }
+  const { data, error } = await apiFetch(
+    `/api/provider/orders/${orderId}`,
+    {
+      method: "PATCH",
+      body: { status },
+    }
   );
-  return res.data;
+
+  if (error) throw new Error(error);
+
+  return data;
 };

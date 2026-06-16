@@ -3,36 +3,41 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { UserCheck, UserX, Shield } from "lucide-react";
+import { apiFetch } from "@/lib/api-client";
+
+/* ✅ Types */
+type User = {
+  id: string;
+  name?: string;
+  email: string;
+  role: "ADMIN" | "PROVIDER" | "CUSTOMER";
+  status: "ACTIVE" | "SUSPENDED";
+};
+
+type ApiMessage = {
+  message: string;
+};
 
 const ManageUsersPage = () => {
-  const [users, setUsers] = useState<any[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [updatingUserId, setUpdatingUserId] = useState<string | null>(null);
 
-  // Fetch users
+  /* ✅ Fetch Users */
   const fetchUsers = async () => {
     try {
-      const res = await fetch("https://food-hub-backend-one.vercel.app/api/admin/users", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
+      setLoading(true);
 
-      if (res.status === 401) {
-        toast.error("You are not logged in as Admin!");
-        return;
+      const { data, error } = await apiFetch<User[]>("/api/admin/users");
+
+      if (error) {
+        toast.error(error);
+        setUsers([]);
+      } else {
+        setUsers(data || []);
       }
-
-      const result = await res.json();
-
-      if (result.success) {
-        setUsers(result.data);
-      }
-    } catch (err) {
-      console.error("Fetch error:", err);
-      toast.error("Failed to fetch users");
+    } catch {
+      toast.error("Failed to load users");
     } finally {
       setLoading(false);
     }
@@ -42,70 +47,74 @@ const ManageUsersPage = () => {
     fetchUsers();
   }, []);
 
-  // Toggle status
-  const toggleUserStatus = async (userId: string, currentStatus: string) => {
-    const newStatus = currentStatus === "ACTIVE" ? "SUSPENDED" : "ACTIVE";
+  /* ✅ Toggle Status */
+  const toggleUserStatus = async (
+    userId: string,
+    currentStatus: string
+  ) => {
+    const newStatus =
+      currentStatus === "ACTIVE" ? "SUSPENDED" : "ACTIVE";
 
     try {
       setUpdatingUserId(userId);
 
-      const res = await fetch(
-        `https://food-hub-backend-one.vercel.app/api/admin/users/${userId}/status`,
+      const { data, error } = await apiFetch<ApiMessage>(
+        `/api/admin/users/${userId}/status`,
         {
           method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify({ status: newStatus }),
+          body: { status: newStatus },
         }
       );
 
-      const result = await res.json();
-
-      if (res.ok) {
-        toast.success(result.message || `User is now ${newStatus}`);
-        fetchUsers();
+      if (error) {
+        toast.error(error);
       } else {
-        toast.error(result.message || "Failed to update status");
+        toast.success(
+          data?.message || `User is now ${newStatus}`
+        );
+        fetchUsers();
       }
-    } catch (err) {
+    } catch {
       toast.error("Network error occurred");
     } finally {
       setUpdatingUserId(null);
     }
   };
 
-  // Change role
+  /* ✅ Change Role */
   const changeUserRole = async (userId: string, role: string) => {
     try {
       setUpdatingUserId(userId);
 
-      const res = await fetch(
-        `https://food-hub-backend-one.vercel.app/api/admin/users/${userId}/role`,
+      const { data, error } = await apiFetch<ApiMessage>(
+        `/api/admin/users/${userId}/role`,
         {
           method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify({ role }),
+          body: { role },
         }
       );
 
-      const result = await res.json();
-
-      if (res.ok) {
-        toast.success(result.message || "Role updated successfully");
-        fetchUsers();
+      if (error) {
+        toast.error(error);
       } else {
-        toast.error(result.message || "Failed to update role");
+        toast.success(
+          data?.message || "Role updated successfully"
+        );
+        fetchUsers();
       }
-    } catch (err) {
+    } catch {
       toast.error("Network error occurred");
     } finally {
       setUpdatingUserId(null);
     }
   };
 
-  if (loading)
-    return <div className="p-10 text-center">Loading users...</div>;
+  /* ✅ Loading */
+  if (loading) {
+    return (
+      <div className="p-10 text-center">Loading users...</div>
+    );
+  }
 
   return (
     <div className="p-8 bg-white rounded-xl shadow-sm border border-gray-100 mt-5 mx-5">
@@ -125,10 +134,18 @@ const ManageUsersPage = () => {
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="border-b bg-gray-50">
-              <th className="p-4 font-semibold text-gray-600">Name</th>
-              <th className="p-4 font-semibold text-gray-600">Email</th>
-              <th className="p-4 font-semibold text-gray-600">Role</th>
-              <th className="p-4 font-semibold text-gray-600">Status</th>
+              <th className="p-4 font-semibold text-gray-600">
+                Name
+              </th>
+              <th className="p-4 font-semibold text-gray-600">
+                Email
+              </th>
+              <th className="p-4 font-semibold text-gray-600">
+                Role
+              </th>
+              <th className="p-4 font-semibold text-gray-600">
+                Status
+              </th>
               <th className="p-4 font-semibold text-gray-600 text-right">
                 Actions
               </th>

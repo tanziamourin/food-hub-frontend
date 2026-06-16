@@ -1,6 +1,7 @@
-import axios from "axios";
+import { apiFetch } from "@/lib/api-client";
 
-const API = process.env.NEXT_PUBLIC_API_URL;
+
+// const API = process.env.NEXT_PUBLIC_API_URL;
 
 type AuthData = {
   email: string;
@@ -8,12 +9,21 @@ type AuthData = {
 };
 
 export const login = async (data: AuthData) => {
-  return axios.post(`${API}/api/auth/login`, data, { withCredentials: true });
+  return apiFetch("/api/auth/login", {
+    method: "POST",
+    body: data,
+  });
 };
 
 export const register = async (data: AuthData) => {
-  return axios.post(`${API}/api/auth/register`, data);
+  return apiFetch("/api/auth/register", {
+    method: "POST",
+    body: data,
+  });
 };
+
 export const logout = async () => {
-  return axios.post(
-    `${API}/api/auth/logout`);}
+  return apiFetch("/api/auth/logout", {
+    method: "POST",
+  });
+};

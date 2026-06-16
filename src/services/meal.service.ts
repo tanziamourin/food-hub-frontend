@@ -1,50 +1,52 @@
-import axios from "axios";
+import { apiFetch, buildQueryString } from "@/lib/api-client";
 import { Meal } from "../types/meal";
-// import { Meal } from "@/types/meal";
-const BASE_URL = "https://food-hub-backend-one.vercel.app/api";
 
+//  Get all meals (simple)
 export const getMeals = async (): Promise<Meal[]> => {
-  const res = await axios.get("https://food-hub-backend-one.vercel.app/api/meals", {
-    withCredentials: true,
-  });
- return res.data;
+  const { data, error } = await apiFetch<Meal[]>("/api/meals");
+
+  if (error) throw new Error(error);
+
+  return data || [];
 };
+
+//  Add meal
 export const addMeal = async (mealData: any) => {
-  try {
-  
-    const res = await axios.post("https://food-hub-backend-one.vercel.app/api/provider/meals", mealData, {
-      withCredentials: true, 
-    });
-    return res.data;
-  } catch (error: any) {
-    throw error.response?.data?.message || "Failed to add meal";
-  }
+  const { data, error } = await apiFetch("/api/provider/meals", {
+    method: "POST",
+    body: mealData,
+  });
+
+  if (error) throw new Error(error);
+
+  return data;
 };
+
+//  Advanced service (filters সহ)
 export const mealService = {
   async getMeals(filters: any = {}) {
-    const query = new URLSearchParams(filters).toString();
+    const query = buildQueryString(filters);
 
-    const res = await axios.get(
-      `${BASE_URL}/meals?${query}`,
-      { withCredentials: true }
+    const { data, error } = await apiFetch<Meal[]>(
+      `/api/meals${query}`
     );
 
-    console.log("🔥 RAW:", res.data);
-
+    if (error) throw new Error(error);
 
     return {
-      data: res.data || [],
+      data: data || [],
     };
   },
 
   async getMealById(id: string) {
-    const res = await axios.get(
-      `${BASE_URL}/meals/${id}`,
-      { withCredentials: true }
+    const { data, error } = await apiFetch<Meal>(
+      `/api/meals/${id}`
     );
 
+    if (error) throw new Error(error);
+
     return {
-      data: res.data,
+      data,
     };
   },
 };

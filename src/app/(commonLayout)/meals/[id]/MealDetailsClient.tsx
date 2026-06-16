@@ -6,7 +6,7 @@ import { ArrowLeft, ShoppingCart, Store, Tag } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/provider/CartProvider";
-// import { useCart } from "@/providers/CartProvider";
+
 
 export default function MealDetailsClient({ meal }: { meal: any }) {
   const { addToCart } = useCart();

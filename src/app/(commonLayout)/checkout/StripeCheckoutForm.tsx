@@ -59,6 +59,13 @@ export default function StripeCheckoutForm() {
         return;
       }
 
+      // 🔥🔥🔥 IMPORTANT FIX HERE
+      if (!res.clientSecret) {
+        toast.error("Payment failed: missing client secret");
+        setLoading(false);
+        return;
+      }
+
       // 💳 Confirm Payment
       const result = await stripe.confirmCardPayment(res.clientSecret, {
         payment_method: {
@@ -70,10 +77,10 @@ export default function StripeCheckoutForm() {
         toast.error(result.error.message);
       } else {
         toast.success("Payment Successful 🎉");
-        clearCart(); // 🔥 IMPORTANT
+        clearCart();
       }
     } catch (error: any) {
-      toast.error(error.message);
+      toast.error(error.message || "Payment failed");
     }
 
     setLoading(false);

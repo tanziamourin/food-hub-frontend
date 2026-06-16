@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { toast } from "sonner";
+import { apiFetch } from "@/lib/api-client";
 
 const ProviderDetailsPage = () => {
   const { id } = useParams();
@@ -10,26 +11,20 @@ const ProviderDetailsPage = () => {
   const [loading, setLoading] = useState(true);
 
   const fetchProvider = async () => {
-    try {
-      const res = await fetch(
-        `https://food-hub-backend-one.vercel.app/api/providers/${id}`
-      );
+  try {
+    const { data, error } = await apiFetch<any>(`/api/providers/${id}`);
 
-      if (!res.ok) throw new Error("Failed");
-
-      const result = await res.json();
-
-      if (result.success) {
-        setProvider(result.data);
-      } else {
-        toast.error(result.message || "Failed to load provider");
-      }
-    } catch (err) {
-      toast.error("Network error");
-    } finally {
-      setLoading(false);
+    if (error) {
+      toast.error(error);
+    } else {
+      setProvider(data);
     }
-  };
+  } catch {
+    toast.error("Network error");
+  } finally {
+    setLoading(false);
+  }
+};
 
   useEffect(() => {
     if (id) fetchProvider();
