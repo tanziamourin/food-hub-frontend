@@ -58,6 +58,9 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
         }
 
         toast.success("User Created Successfully", { id: toastId });
+        const session = await authClient.getSession();
+
+console.log("SESSION:", session);
       } catch (err) {
         toast.error("Something went wrong, please try again.", { id: toastId });
       }

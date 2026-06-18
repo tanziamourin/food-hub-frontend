@@ -49,7 +49,9 @@ export function LoginForm() {
 
       toast.success("Login success", { id: t });
 
-      
+      const session = await authClient.getSession();
+
+      console.log("SESSION:", session);
       router.replace("/dashboard");
     },
   });
