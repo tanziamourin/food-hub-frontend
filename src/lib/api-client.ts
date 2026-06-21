@@ -1,6 +1,7 @@
 const API_URL =
   process.env.NEXT_PUBLIC_API_URL ||
   "https://food-hub-backend-one.vercel.app";
+  
 
 interface FetchOptions {
   method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
