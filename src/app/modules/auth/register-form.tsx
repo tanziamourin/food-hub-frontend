@@ -1,4 +1,3 @@
-/* eslint-disable react/no-children-prop */
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -23,19 +22,24 @@ import { toast } from "sonner";
 import * as z from "zod";
 
 const formSchema = z.object({
-  name: z.string().min(1, "This field is required"),
+  name: z.string().min(1, "Name is required"),
+  email: z.string().email("Invalid email"),
   password: z.string().min(8, "Minimum length is 8"),
-  email: z.email(),
 });
 
-export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
+export function RegisterForm(
+  props: Omit<React.ComponentProps<typeof Card>, "children">
+) {
   const handleGoogleLogin = async () => {
-    const data = authClient.signIn.social({
-      provider: "google",
-      callbackURL: "https://food-hub-frontend-ten.vercel.app",
-    });
-
-    console.log(data);
+    try {
+      await authClient.signIn.social({
+        provider: "google",
+        callbackURL: "https://food-hub-frontend-ten.vercel.app",
+      });
+    } catch (error) {
+      console.error(error);
+      toast.error("Google login failed");
+    }
   };
 
   const form = useForm({
@@ -48,26 +52,40 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
       onSubmit: formSchema,
     },
     onSubmit: async ({ value }) => {
-      const result = await authClient.signUp.email(value);
-      const toastId = toast.loading("Creating user");
-      try {
-        // const { data, error } = await authClient.signUp.email(value);
-        console.log("FULL RESULT", JSON.stringify(result, null, 2));
-  // console.log("DATA:", data);
-  // console.log("ERROR:", error);
-        // if (error) {
-        //   toast.error(error.message, { id: toastId });
-        //   return;
-        // }
+      const toastId = toast.loading("Creating account...");
 
-        toast.success("User Created Successfully", { id: toastId });
+      try {
+        const result = await authClient.signUp.email({
+          name: value.name,
+          email: value.email,
+          password: value.password,
+        });
+
+        console.log("REGISTER RESULT:", result);
+
+        if ((result as any)?.error) {
+          toast.error(
+            (result as any).error.message || "Registration failed",
+            {
+              id: toastId,
+            }
+          );
+          return;
+        }
+
+        toast.success("Account created successfully", {
+          id: toastId,
+        });
+
         const session = await authClient.getSession();
 
-console.log("SESSION:", session);
-      } catch (err) {
-        
-console.log("SESSION:", err);
-        toast.error("Something went wrong, please try again.", { id: toastId });
+        console.log("SESSION:", session);
+      } catch (error) {
+        console.error(error);
+
+        toast.error("Something went wrong", {
+          id: toastId,
+        });
       }
     },
   });
@@ -80,93 +98,70 @@ console.log("SESSION:", err);
           Enter your information below to create your account
         </CardDescription>
       </CardHeader>
+
       <CardContent>
         <form
-          id="login-form"
+          id="register-form"
           onSubmit={(e) => {
             e.preventDefault();
             form.handleSubmit();
           }}
         >
           <FieldGroup>
-            <form.Field
-              name="name"
-              children={(field) => {
-                const isInvalid =
-                  field.state.meta.isTouched && !field.state.meta.isValid;
-                return (
-                  <Field data-invalid={isInvalid}>
-                    <FieldLabel htmlFor={field.name}>Name</FieldLabel>
-                    <Input
-                      type="text"
-                      id={field.name}
-                      name={field.name}
-                      value={field.state.value}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                    />
-                    {isInvalid && (
-                      <FieldError errors={field.state.meta.errors} />
-                    )}
-                  </Field>
-                );
-              }}
-            />
-            <form.Field
-              name="email"
-              children={(field) => {
-                const isInvalid =
-                  field.state.meta.isTouched && !field.state.meta.isValid;
-                return (
-                  <Field>
-                    <FieldLabel htmlFor={field.name}>Email</FieldLabel>
-                    <Input
-                      type="email"
-                      id={field.name}
-                      name={field.name}
-                      value={field.state.value}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                    />
-                    {isInvalid && (
-                      <FieldError errors={field.state.meta.errors} />
-                    )}
-                  </Field>
-                );
-              }}
-            />
-            <form.Field
-              name="password"
-              children={(field) => {
-                const isInvalid =
-                  field.state.meta.isTouched && !field.state.meta.isValid;
-                return (
-                  <Field>
-                    <FieldLabel htmlFor={field.name}>Password</FieldLabel>
-                    <Input
-                      type="password"
-                      id={field.name}
-                      name={field.name}
-                      value={field.state.value}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                    />
-                    {isInvalid && (
-                      <FieldError errors={field.state.meta.errors} />
-                    )}
-                  </Field>
-                );
-              }}
-            />
+            <form.Field name="name">
+              {(field) => (
+                <Field>
+                  <FieldLabel>Name</FieldLabel>
+                  <Input
+                    value={field.state.value}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                  />
+                  <FieldError errors={field.state.meta.errors} />
+                </Field>
+              )}
+            </form.Field>
+
+            <form.Field name="email">
+              {(field) => (
+                <Field>
+                  <FieldLabel>Email</FieldLabel>
+                  <Input
+                    type="email"
+                    value={field.state.value}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                  />
+                  <FieldError errors={field.state.meta.errors} />
+                </Field>
+              )}
+            </form.Field>
+
+            <form.Field name="password">
+              {(field) => (
+                <Field>
+                  <FieldLabel>Password</FieldLabel>
+                  <Input
+                    type="password"
+                    value={field.state.value}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                  />
+                  <FieldError errors={field.state.meta.errors} />
+                </Field>
+              )}
+            </form.Field>
           </FieldGroup>
         </form>
       </CardContent>
-      <CardFooter className="flex flex-col gap-5 justify-end">
-        <Button form="login-form" type="submit" className="w-full">
+
+      <CardFooter className="flex flex-col gap-4">
+        <Button form="register-form" type="submit" className="w-full">
           Register
         </Button>
+
         <Button
-          onClick={() => handleGoogleLogin()}
-          variant="outline"
           type="button"
+          variant="outline"
           className="w-full"
+          onClick={handleGoogleLogin}
         >
           Continue with Google
         </Button>
