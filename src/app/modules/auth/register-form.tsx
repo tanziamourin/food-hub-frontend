@@ -63,6 +63,8 @@ console.log("ERROR:", error);
 
 console.log("SESSION:", session);
       } catch (err) {
+        
+console.log("SESSION:", err);
         toast.error("Something went wrong, please try again.", { id: toastId });
       }
     },
