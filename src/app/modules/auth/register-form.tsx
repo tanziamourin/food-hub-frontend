@@ -51,14 +51,14 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
       const result = await authClient.signUp.email(value);
       const toastId = toast.loading("Creating user");
       try {
-        const { data, error } = await authClient.signUp.email(value);
+        // const { data, error } = await authClient.signUp.email(value);
         console.log("FULL RESULT", JSON.stringify(result, null, 2));
   // console.log("DATA:", data);
   // console.log("ERROR:", error);
-        if (error) {
-          toast.error(error.message, { id: toastId });
-          return;
-        }
+        // if (error) {
+        //   toast.error(error.message, { id: toastId });
+        //   return;
+        // }
 
         toast.success("User Created Successfully", { id: toastId });
         const session = await authClient.getSession();
